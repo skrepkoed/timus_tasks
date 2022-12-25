@@ -27,6 +27,7 @@ public class TeamWork {
         }
         result_string+=result_string(at_row.get(numbers[length-1]), numbers[length-1]);
         System.out.println(result_string);
+        input.close();
     }
     public static String result_string(int i, int k){
         String str="";
