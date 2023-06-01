@@ -11,7 +11,8 @@ public class DirichlePrinciple {
     String garbage=input.nextLine();
     garbage=input.nextLine();
     input.close();
-    ArrayList <String> pigeons=new ArrayList<String>(Arrays.asList(str.replaceAll("(\\.|@)", "").split("")));
+    ArrayList <String> pigeons=
+    new ArrayList<String>(Arrays.asList(str.replaceAll("(\\.|@)", "").split("")));
     test1(pigeons);
     int[] analyz1=test1(pigeons);
     int[] analyz2=test2(pigeons);

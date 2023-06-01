@@ -8,16 +8,18 @@ import java.util.Scanner;
 public class AliceAndBob {
     public static void main(String[] args) {
         Scanner input =new Scanner(System.in);
-        int length= Integer.parseInt(input.nextLine());
+        long length= Integer.parseInt(input.nextLine());
         ArrayList<String> sideA=new ArrayList<String>(Arrays.asList(input.nextLine().split("")));
         ArrayList<String> sideB=new ArrayList<String>(Arrays.asList(input.nextLine().split("")));
         String answer="";
         int counter=0;
+        long frame=frame(length);
+        
          while (length%2==0) {
             if (counter%2==0) {
-                answer=aliceTurn(sideA, sideB, length, answer);
+                answer=aliceTurn(sideA, sideB, length, frame, answer);
             }else{
-                answer=bobTurn(sideA, sideB, length, answer);
+                answer=bobTurn(sideA, sideB, length, frame, answer);
             }
             counter+=1;
             length=length/2;
@@ -29,10 +31,17 @@ public class AliceAndBob {
         System.out.println(answer);
     }
 
-    public static String aliceTurn(ArrayList<String> sideA,ArrayList<String> sideB, int length, String answer) {
-        int[]occurr=occurencies(sideA, sideB);
+    public static long frame(long length) {
+        while(length%2==0&&length>2){
+            length=length/2;
+        }
+        return length;
+    }
+
+    public static String aliceTurn(ArrayList<String> sideA,ArrayList<String> sideB, long length,long frame, String answer) {
+        //int[]occurr=occurencies(sideA, sideB);
         if (length%2==0) {
-            if (occurr[0]>=occurr[2]) {
+            if (count_wins(sideA, frame, "A")>=count_wins(sideB, frame, "A")) {
                 out(sideA, sideB);
             }else{
                 in(sideA, sideB);
@@ -49,10 +58,10 @@ public class AliceAndBob {
         }
         return "";
     }
-    public static String bobTurn(ArrayList<String> sideA,ArrayList<String> sideB, int length, String answer) {
-        int[]occurr=occurencies(sideA, sideB);
+    public static String bobTurn(ArrayList<String> sideA,ArrayList<String> sideB, long length, long frame, String answer) {
+        //int[]occurr=occurencies(sideA, sideB);
         if (length%2==0) {
-            if (occurr[1]>=occurr[3]) {
+            if (count_wins(sideA, frame, "B")>=count_wins(sideB, frame, "B")) {
                 out(sideA, sideB);
             }else{
                 in(sideA, sideB);
@@ -93,6 +102,15 @@ public class AliceAndBob {
         }
         sideA.subList(0, sideA.size()/2).clear();
         sideB.subList(0, sideB.size()/2).clear();
+    }
+    public static long count_wins(ArrayList<String> side, long frame, String color) {
+        long result=0;
+        for(int i=0, k=(int)frame-1;i<side.size();i+=frame, k+=frame){
+                if (Collections.frequency(side.subList(i, k), color)==side.subList(i, k).size()) {
+                    result+=1;
+                }
+        }
+        return result;
     }
     public static int[] occurencies(ArrayList<String> sideA,ArrayList<String> sideB) {
         int[]occurr={Collections.frequency(sideA, "A"),Collections.frequency(sideA, "B"),
